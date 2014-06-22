@@ -36,7 +36,7 @@
         while (path[i]) {
           from = path[index];
           to = path[i];
-          if (pathfinding.isWalkablePath(from, to, grid) && pathfinding.isWalkablePath([from[0] + 1, from[1]], [to[0] + 1, to[1]], grid) && pathfinding.isWalkablePath([from[0], from[1] + 1], [to[0], to[1] + 1], grid) && pathfinding.isWalkablePath([from[0] + 1, from[1] + 1], [to[0] + 1, to[1] + 1], grid)) {
+          if (pathfinding.isWalkablePath(from, to, grid)) {
             lastPath = path[i];
           } else {
             newPath.push(lastPath);
@@ -56,7 +56,7 @@
       vector = [to[0] - from[0], to[1] - from[1]];
       distance = Math.sqrt(Math.pow(vector[0], 2) + Math.pow(vector[1], 2));
       if (distance === 0) {
-        return [0, 0];
+        return [0, 0, 0];
       } else {
         return [vector[0] / distance, vector[1] / distance, distance];
       }
@@ -106,16 +106,17 @@
       return result;
     },
     isWalkablePath: function(from, to, grid) {
-      var i, len, point, points;
-      points = pathfinding.getPoints(from, to);
-      i = 0;
-      len = points.length;
-      while (i < len) {
-        point = points[i];
-        if (!pathfinding.isCellWalkable(point, grid)) {
-          return false;
+      var point, points, solution, solutions, _i, _j, _len, _len1;
+      solutions = [[0, 0], [1, 0], [0, 1], [1, 1], [-1, 0], [0, -1], [-1, -1]];
+      for (_i = 0, _len = solutions.length; _i < _len; _i++) {
+        solution = solutions[_i];
+        points = pathfinding.getPoints([from[0] + solution[0], from[1] + solution[1]], [to[0] + solution[0], to[1] + solution[1]]);
+        for (_j = 0, _len1 = points.length; _j < _len1; _j++) {
+          point = points[_j];
+          if (!pathfinding.isCellWalkable(point, grid)) {
+            return false;
+          }
         }
-        i++;
       }
       return true;
     },

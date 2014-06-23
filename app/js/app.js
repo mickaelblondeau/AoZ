@@ -13,6 +13,9 @@
     step: 0.25,
     getSmoothPath: function(start, end, grid) {
       var path;
+      if (!pathfinding.isCellWalkable(end, grid)) {
+        end = pathfinding.findNearestWalkableCell(end, grid);
+      }
       path = pathfinding.getPath(start, end, grid);
       return pathfinding.smoothPath(path, grid);
     },
@@ -122,6 +125,18 @@
     },
     isCellWalkable: function(cell, grid) {
       return grid && grid[cell[1]] && grid[cell[1]][cell[0]] === 0;
+    },
+    findNearestWalkableCell: function(cell, grid) {
+      var sol, solution, solutions, _i, _len;
+      solutions = [[1, 0], [0, 1], [1, 1], [-1, 0], [0, -1], [-1, -1], [1, -1], [-1, 1]];
+      for (_i = 0, _len = solutions.length; _i < _len; _i++) {
+        solution = solutions[_i];
+        sol = [cell[0] + solution[0], cell[1] + solution[1]];
+        if (pathfinding.isCellWalkable(sol, grid)) {
+          return sol;
+        }
+      }
+      return cell;
     },
     parseGrid: function(map) {
       var col, grid, i, j, tile;

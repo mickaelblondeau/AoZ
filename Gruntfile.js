@@ -3,11 +3,11 @@ module.exports = function(grunt) {
     grunt.initConfig({
         watch: {
             app: {
-                files: ['src/app/*.coffee', 'src/app/Classes/*.coffee'],
+                files: ['src/app/*.coffee', 'src/app/Classes/*.coffee', 'src/shared/*.coffee'],
                 tasks: ['concat:app', 'coffee:app']
             },
             server: {
-                files: ['src/server/*.coffee', 'src/server/Classes/*.coffee'],
+                files: ['src/server/*.coffee', 'src/server/Classes/*.coffee', 'src/shared/*.coffee'],
                 tasks: ['concat:server', 'coffee:server']
             }
         },

@@ -1,6 +1,8 @@
 pathfinding =
   step: 0.25
   getSmoothPath: (start, end, grid) ->
+    unless pathfinding.isCellWalkable(end, grid)
+      end = pathfinding.findNearestWalkableCell(end, grid)
     path = pathfinding.getPath(start, end, grid)
     pathfinding.smoothPath(path, grid)
 
@@ -99,6 +101,23 @@ pathfinding =
 
   isCellWalkable: (cell, grid) ->
     grid and grid[cell[1]] and grid[cell[1]][cell[0]] is 0
+
+  findNearestWalkableCell: (cell, grid) ->
+    solutions = [
+      [1, 0]
+      [0, 1]
+      [1, 1]
+      [-1, 0]
+      [0, -1]
+      [-1, -1]
+      [1, -1]
+      [-1, 1]
+    ]
+    for solution in solutions
+      sol = [cell[0] + solution[0], cell[1] + solution[1]]
+      if pathfinding.isCellWalkable(sol, grid)
+        return sol
+    return cell
 
   parseGrid: (map) ->
     grid = []
